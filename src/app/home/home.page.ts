@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild  } from '@angular/core';
 import { ANIMALES } from '../../data/data.animales';
 import { Animal } from '../interfaces/animal.interface';
 @Component({
@@ -10,6 +10,8 @@ export class HomePage {
     animales: Animal[] = [];
     audio = new Audio();
     audioTiempo: any;
+
+    @ViewChild('slidingList') slidingList: any;
     constructor() {
        this.animales = ANIMALES.slice(0);
     }
@@ -43,5 +45,19 @@ export class HomePage {
              animal.reproduciendo = false;
            }
         }
+    }
+
+    borrar_animal(idx:number){
+         this.animales.splice(idx,1);
+         this.slidingList.closeSlidingItems();
+    }
+    recargar_animales(refresher:any){
+      console.log('Inicio del refresh');
+
+      setTimeout(() => {
+        console.log('Termino el refresh');
+        this.animales = ANIMALES.slice(0);
+        refresher.target.complete();
+      }, 2000);
     }
 }
